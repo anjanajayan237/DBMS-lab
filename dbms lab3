@@ -1,0 +1,153 @@
+mysql> create database TCL;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use TCL;
+Database changed
+ysql> create table order_details(order_id int(10),product_name varchar(50),order_no int(10),order_date date);
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+',456,'2001-02-02'),(3,'keyboard',457,'2000-03-02'),(4,'mouse',500,'2001-03-02'),(5,'antivirus',501,'2002-03-02');
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into order_details values(6,'printer',601,'2003-01-01');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into order_details values(7,'scanner',602,'2003-02-02');
+Query OK, 1 row affected (0.00 sec)
+mysql> select * from order_details;
++----------+--------------+----------+------------+
+| order_id | product_name | order_no | order_date |
++----------+--------------+----------+------------+
+|        1 | laptop       |      234 | 2000-03-02 |
+|        2 | desktop      |      456 | 2001-02-02 |
+|        3 | keyboard     |      457 | 2000-03-02 |
+|        4 | mouse        |      500 | 2001-03-02 |
+|        5 | antivirus    |      501 | 2002-03-02 |
+|        6 | printer      |      601 | 2003-01-01 |
+|        7 | scanner      |      602 | 2003-02-02 |
++----------+--------------+----------+------------+
+7 rows in set (0.00 sec)
+mysql> rollback;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from order_details;
++----------+--------------+----------+------------+
+| order_id | product_name | order_no | order_date |
++----------+--------------+----------+------------+
+|        1 | laptop       |      234 | 2000-03-02 |
+|        2 | desktop      |      456 | 2001-02-02 |
+|        3 | keyboard     |      457 | 2000-03-02 |
+|        4 | mouse        |      500 | 2001-03-02 |
+|        5 | antivirus    |      501 | 2002-03-02 |
++----------+--------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+mysql> delete from order_details where order_id in(4,5);
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> select * from order_details;
++----------+--------------+----------+------------+
+| order_id | product_name | order_no | order_date |
++----------+--------------+----------+------------+
+|        1 | laptop       |      234 | 2000-03-02 |
+|        2 | desktop      |      456 | 2001-02-02 |
+|        3 | keyboard     |      457 | 2000-03-02 |
++----------+--------------+----------+------------+
+3 rows in set (0.00 sec)
+mysql> commit;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> set autocommit = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> savepoint svp_update;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update order_details set product_name = 'gaming keyboard' where order_no = 457;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> insert into order_details values(8,'speaker',701,'2004-01-01'),(9,'webcam',702,'2004-02-02');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> savepoint svp_delete;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from order_details where product_name='desktop';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from order_details;
++----------+-----------------+----------+------------+
+| order_id | product_name    | order_no | order_date |
++----------+-----------------+----------+------------+
+|        1 | laptop          |      234 | 2000-03-02 |
+|        3 | gaming keyboard |      457 | 2000-03-02 |
+|        8 | speaker         |      701 | 2004-01-01 |
+|        9 | webcam          |      702 | 2004-02-02 |
++----------+-----------------+----------+------------+
+4 rows in set (0.00 sec)
+mysql> rollback to svp_delete;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from order_details;
++----------+-----------------+----------+------------+
+| order_id | product_name    | order_no | order_date |
++----------+-----------------+----------+------------+
+|        1 | laptop          |      234 | 2000-03-02 |
+|        2 | desktop         |      456 | 2001-02-02 |
+|        3 | gaming keyboard |      457 | 2000-03-02 |
+|        8 | speaker         |      701 | 2004-01-01 |
+|        9 | webcam          |      702 | 2004-02-02 |
++----------+-----------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> rollback to svp_update;
+Query OK, 0 rows affected (0.02 sec)
+mysql> select * from order_details;
++----------+--------------+----------+------------+
+| order_id | product_name | order_no | order_date |
++----------+--------------+----------+------------+
+|        1 | laptop       |      234 | 2000-03-02 |
+|        2 | desktop      |      456 | 2001-02-02 |
+|        3 | keyboard     |      457 | 2000-03-02 |
++----------+--------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+mysql> set autocommit = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create user'labuser'@'localhost' identified by '1234';
+Query OK, 0 rows affected (0.03 sec)
+mysql> grant all privileges on order_details to 'labuser'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show grants for 'labuser'@'localhost';
++------------------------------------------------------------------------+
+| Grants for labuser@localhost                                           |
++------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `labuser`@`localhost`                            |
+| GRANT ALL PRIVILEGES ON `TCL`.`order_details` TO `labuser`@`localhost` |
++------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> revoke insert,delete on order_details from 'labuser'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show grants for 'labuser'@'localhost';
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for labuser@localhost                                                                                                                    |
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `labuser`@`localhost`                                                                                                     |
+| GRANT SELECT, UPDATE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER ON `TCL`.`order_details` TO `labuser`@`localhost` |
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+
+

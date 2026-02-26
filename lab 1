@@ -1,0 +1,85 @@
+mysql> create database test;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use test;
+Database changed
+mysql> Create table student(Rollno int(10),Name Varchar(10),Dob Date,Place Varchar(10),Phone_no int(10));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> DESC student;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Rollno   | int         | YES  |     | NULL    |       |
+| Name     | varchar(10) | YES  |     | NULL    |       |
+| Dob      | date        | YES  |     | NULL    |       |
+| Place    | varchar(10) | YES  |     | NULL    |       |
+| Phone_no | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table course(c_code int(10),C_name Varchar(10),credit int(10));
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> DESC course;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| c_code | int         | YES  |     | NULL    |       |
+| C_name | varchar(10) | YES  |     | NULL    |       |
+| credit | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> alter table student drop phone_no;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| Rollno | int         | YES  |     | NULL    |       |
+| Name   | varchar(10) | YES  |     | NULL    |       |
+| Dob    | date        | YES  |     | NULL    |       |
+| Place  | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> alter table student add Aadhar_no Varchar(10);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Rollno    | int         | YES  |     | NULL    |       |
+| Name      | varchar(10) | YES  |     | NULL    |       |
+| Dob       | date        | YES  |     | NULL    |       |
+| Place     | varchar(10) | YES  |     | NULL    |       |
+| Aadhar_no | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> alter table student modify column Rollno Varchar(10);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Rollno    | varchar(10) | YES  |     | NULL    |       |
+| Name      | varchar(10) | YES  |     | NULL    |       |
+| Dob       | date        | YES  |     | NULL    |       |
+| Place     | varchar(10) | YES  |     | NULL    |       |
+| Aadhar_no | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop database test;
+Query OK, 1 row affected (0.04 sec)
